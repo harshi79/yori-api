@@ -16,6 +16,7 @@ def home():
             "/ai/pixel",
             "/ai/cartoon",
             "/tools/download"
+            "/tts/hindi"
         ]
     }
 
@@ -146,3 +147,17 @@ def download(url: str):
         raise HTTPException(status_code=502, detail=f"Upstream error: {str(e)}")
     except ValueError:
         raise HTTPException(status_code=502, detail="Invalid JSON from upstream")
+
+@app.get("/tts/hindi")
+def tts_hindi(text: str):
+
+    r = requests.get(
+        "https://apis.prexzyvilla.site/tts/tts-hi",
+        params={"text": text},
+        timeout=120
+    )
+
+    return Response(
+        content=r.content,
+        media_type="audio/mpeg"
+    )
