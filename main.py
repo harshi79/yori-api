@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.responses import Response
 import requests
 
 app = FastAPI(title="Yori API", version="1.0.0")
@@ -12,7 +13,6 @@ def home():
 
 @app.get("/ai/code")
 def code(prompt: str, history: str = ""):
-
     r = requests.get(
         "https://apis.prexzyvilla.site/ai/blackbox",
         params={
@@ -23,7 +23,6 @@ def code(prompt: str, history: str = ""):
     )
 
     data = r.json()
-
     response_text = data.get("response", "")
 
     if "</think>" in response_text:
@@ -34,3 +33,19 @@ def code(prompt: str, history: str = ""):
         "creator": "Yori",
         "response": response_text
     }
+
+@app.get("/ai/anime")
+def anime(prompt: str, negative_prompt: str = ""):
+    r = requests.get(
+        "https://apis.prexzyvilla.site/ai/anime",
+        params={
+            "prompt": prompt,
+            "negative_prompt": negative_prompt
+        },
+        timeout=120
+    )
+
+    return Response(
+        content=r.content,
+        media_type="image/png"
+    )
