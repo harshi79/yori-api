@@ -12,6 +12,7 @@ def home():
 
 @app.get("/ai/code")
 def code(prompt: str, history: str = ""):
+
     r = requests.get(
         "https://apis.prexzyvilla.site/ai/blackbox",
         params={
@@ -23,8 +24,13 @@ def code(prompt: str, history: str = ""):
 
     data = r.json()
 
+    response_text = data.get("response", "")
+
+    if "</think>" in response_text:
+        response_text = response_text.split("</think>", 1)[1].strip()
+
     return {
         "status": True,
         "creator": "Yori",
-        "response": data.get("response", "")
+        "response": response_text
     }
