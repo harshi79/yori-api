@@ -11,6 +11,27 @@ app = FastAPI(
 )
 
 
+@app.get("/health")
+def health_check():
+    """
+    Lightweight health-check endpoint.
+    Use this URL in UptimeRobot / cron monitors to check if the API is alive.
+    It does not call any upstream API, so it responds fast and avoids extra load.
+    """
+    return {
+        "status": True,
+        "message": "Yori API is healthy",
+        "service": "Yori API",
+        "version": "1.0.0"
+    }
+
+
+@app.get("/healthz")
+def healthz():
+    """Alias for /health."""
+    return health_check()
+
+
 @app.get("/", response_class=HTMLResponse)
 def home():
     return """
