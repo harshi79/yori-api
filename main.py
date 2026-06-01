@@ -65,3 +65,21 @@ def pixel(prompt: str, negative_prompt: str = ""):
         content=r.content,
         media_type="image/png"
     )
+
+@app.get("/ai/cartoon")
+def cartoon(imageurl: str):
+    r = requests.get(
+        "https://apis.prexzyvilla.site/ai/cartoon",
+        params={"imageurl": imageurl},
+        timeout=120
+    )
+
+    data = r.json()
+
+    return {
+        "status": True,
+        "creator": "Yori",
+        "original_image": data.get("original_image", ""),
+        "anime_image": data.get("anime_image", ""),
+        "service": data.get("service", "")
+    }
