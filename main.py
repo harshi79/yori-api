@@ -49,3 +49,19 @@ def anime(prompt: str, negative_prompt: str = ""):
         content=r.content,
         media_type="image/png"
     )
+
+@app.get("/ai/pixel")
+def pixel(prompt: str, negative_prompt: str = ""):
+    r = requests.get(
+        "https://apis.prexzyvilla.site/ai/pixel-art",
+        params={
+            "prompt": prompt,
+            "negative_prompt": negative_prompt
+        },
+        timeout=120
+    )
+
+    return Response(
+        content=r.content,
+        media_type="image/png"
+    )
